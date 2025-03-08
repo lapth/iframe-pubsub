@@ -44,3 +44,39 @@ client.onMessage((message: IMessage) => {
 ```ts
 client.sendMessage(targetPageId, messageText);
 ```
+
+# DEMO
+
+## Let build the library if you haven't done that yet with
+```sh
+cd packages/iframe-pubsub
+npm install
+npm run build
+```
+
+## Let install the dependencies if you haven't done that yet with
+```sh
+cd demo/main-page
+npm install
+```
+
+```sh
+cd demo/sub-page
+npm install
+```
+
+## You need to start 3 pages: main page, sub page 1 and sub page 2
+
+```shell
+# Run main page from terminal on port 3000
+cd demo/main-page
+npm run dev
+
+# Run sub page 1 from terminal on port 3001
+cd demo/sub-page
+npm run dev:page1
+
+# Run sub page 3 from terminal on port 3003
+cd demo/sub-page
+npm run dev:page3
+```
