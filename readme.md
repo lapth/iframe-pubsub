@@ -16,11 +16,11 @@ import { PubSub, IMessage } from '@lapth/iframe-pubsub';
 const pubsub = PubSub.getInstance();
 ```
 
-### Sub page (within iframe) or component
+### Sub page (within iframe or component)
 
 1. You only need to import the library
 ```ts
-import { PubSub, IMessage } from '@lapth/iframe-pubsub';
+import { Client, IMessage } from '@lapth/iframe-pubsub';
 ```
 
 2. Define your page/component id
