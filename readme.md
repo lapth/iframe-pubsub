@@ -6,9 +6,9 @@
 
 You need to initialize the library on the main page with 2 steps
 
-1. Initialize the library
+1. Import the library
 ```ts
-import { PubSub, IMessage } from '@lapth/iframe-pubsub';
+import { PubSub, IMessage } from 'iframe-pubsub';
 ```
 
 2. Start it
@@ -18,9 +18,9 @@ const pubsub = PubSub.getInstance();
 
 ### Sub page (within iframe or component)
 
-1. You only need to import the library
+1. Import the library
 ```ts
-import { Client, IMessage } from '@lapth/iframe-pubsub';
+import { Client, IMessage } from 'iframe-pubsub';
 ```
 
 2. Define your page/component id
@@ -28,21 +28,23 @@ import { Client, IMessage } from '@lapth/iframe-pubsub';
 const pageId = 'page-id';
 ```
 
-3. Register with the pubsub
+3. Start a new Client instance and register your page Id with pubsub manager
 ```ts
 const [client] = useState(() => new Client(pageId)); // Register the client
 ```
 
-3. Listen for messages
+4. Listen for messages
 ```ts
 client.onMessage((message: IMessage) => {
   setMessages(prev => [...prev, message]);
 });
 ```
 
-4. Or sending a message
+5. Sending a message
 ```ts
-client.sendMessage(targetPageId, messageText);
+client.sendMessage(targetPageId, event);
+
+// Note: event can be a string or an JSON object
 ```
 
 # DEMO

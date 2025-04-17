@@ -14,10 +14,12 @@ export enum AIChatNameEnum {
   SET_SUGGESTIONS = 'setSuggestions',
   SHOW_SUGGESTIONS = 'showSuggestions',
   SHOW_CHAT_MESSAGE = 'showChatMessage',
+  SHOW_ERROR_MESSAGE = 'showErrorMessage',
+  SHOW_COMING_SOON = 'showComingSoon',
   CONFIRM_ACTION = 'confirmAction',
   SHOW_OPTIONS = 'showOptions',
-
   SEND_CHAT_PROMPT = 'sendChatPrompt',
+  OPEN_INTERCOM = 'openIntercom',
 
   // Default handler to process the actions
   DEFAULT = 'default',
@@ -33,7 +35,7 @@ export class AIChatClient extends Client   {
     super(pageId);
   }
   
-  private sendAIChatMethod(methodName: string, arg: any): void {
+  private sendAIChatPubsubMethod(methodName: string, arg: any): void {
     this.sendMessage(
       AIChatNameEnum.AI_CHAT_CLIENT_ID, // This name is hardcode, do not change it
       {
@@ -50,7 +52,7 @@ export class AIChatClient extends Client   {
    * @param parentName The name of the parent page.
    */
   setParentName(parentName: string): void {
-    this.sendAIChatMethod(AIChatNameEnum.SET_PARENT_NAME, parentName);
+    this.sendAIChatPubsubMethod(AIChatNameEnum.SET_PARENT_NAME, parentName);
   }
 
   /**
@@ -59,7 +61,7 @@ export class AIChatClient extends Client   {
    * @param userId The user ID.
    */
   setUserId(userId: string): void {
-    this.sendAIChatMethod(AIChatNameEnum.SET_USER_ID, userId);
+    this.sendAIChatPubsubMethod(AIChatNameEnum.SET_USER_ID, userId);
   }
 
   /**
@@ -68,7 +70,7 @@ export class AIChatClient extends Client   {
    * @param headers The custom headers.
    */
   setCustomHeaders(headers: Record<string, string>): void {
-    this.sendAIChatMethod(AIChatNameEnum.SET_CUSTOM_HEADERS, headers);
+    this.sendAIChatPubsubMethod(AIChatNameEnum.SET_CUSTOM_HEADERS, headers);
   }
 
   /**
@@ -77,7 +79,7 @@ export class AIChatClient extends Client   {
    * @param payload The custom payload.
    */
   setCustomPayload(payload: Record<string, any>): void {
-    this.sendAIChatMethod(AIChatNameEnum.SET_CUSTOM_PAYLOAD, payload);
+    this.sendAIChatPubsubMethod(AIChatNameEnum.SET_CUSTOM_PAYLOAD, payload);
   }
 
   /**
@@ -86,7 +88,7 @@ export class AIChatClient extends Client   {
    * @param suggestions The suggestions to set.
    */
   setSuggestions(suggestions: any[]): void {
-    this.sendAIChatMethod(AIChatNameEnum.SET_SUGGESTIONS, suggestions);
+    this.sendAIChatPubsubMethod(AIChatNameEnum.SET_SUGGESTIONS, suggestions);
   }
 
   /**
@@ -95,7 +97,7 @@ export class AIChatClient extends Client   {
    * @param show Whether to show suggestions.
    */
   showSuggestions(show: boolean): void {
-    this.sendAIChatMethod(AIChatNameEnum.SHOW_SUGGESTIONS, show);
+    this.sendAIChatPubsubMethod(AIChatNameEnum.SHOW_SUGGESTIONS, show);
   }
 
   /**
@@ -104,7 +106,28 @@ export class AIChatClient extends Client   {
    * @param message The message to show.
    */
   showChatMessage(message: string): void {
-    this.sendAIChatMethod(AIChatNameEnum.SHOW_CHAT_MESSAGE, message);
+    this.sendMessage(AIChatNameEnum.AI_CHAT_CLIENT_ID, {
+      type: AIChatNameEnum.AI_CHAT_CLIENT_ID,
+      name: AIChatNameEnum.SHOW_CHAT_MESSAGE,
+      parameters: {
+        message
+      }
+    })
+  }
+
+  /**
+   * Show an error message in the AI Chat component.
+   * 
+   * @param message The error message to show.
+   */
+  showErrorMessage(message: string): void {
+    this.sendMessage(AIChatNameEnum.AI_CHAT_CLIENT_ID, {
+      type: AIChatNameEnum.AI_CHAT_CLIENT_ID,
+      name: AIChatNameEnum.SHOW_ERROR_MESSAGE,
+      parameters: {
+        message
+      }
+    })
   }
 
   /**
@@ -113,7 +136,13 @@ export class AIChatClient extends Client   {
    * @param action The action to confirm.
    */
   confirmAction(action: any): void {
-    this.sendAIChatMethod(AIChatNameEnum.CONFIRM_ACTION, action);
+    this.sendMessage(AIChatNameEnum.AI_CHAT_CLIENT_ID, {
+      type: AIChatNameEnum.AI_CHAT_CLIENT_ID,
+      name: AIChatNameEnum.CONFIRM_ACTION,
+      parameters: {
+        action
+      }
+    })
   }
 
   /**
@@ -122,7 +151,13 @@ export class AIChatClient extends Client   {
    * @param options The options to show.
    */
   showOptions(options: any[]): void {
-    this.sendAIChatMethod(AIChatNameEnum.SHOW_OPTIONS, options);
+    this.sendMessage(AIChatNameEnum.AI_CHAT_CLIENT_ID, {
+      type: AIChatNameEnum.AI_CHAT_CLIENT_ID,
+      name: AIChatNameEnum.SHOW_OPTIONS,
+      parameters: {
+        options
+      }
+    })
   }
 
   /**
@@ -131,6 +166,25 @@ export class AIChatClient extends Client   {
    * @param prompt The prompt to send.
    */
   sendChatPrompt(prompt: string): void {
-    this.sendAIChatMethod(AIChatNameEnum.SEND_CHAT_PROMPT, prompt);
+    this.sendMessage(AIChatNameEnum.AI_CHAT_CLIENT_ID, {
+      type: AIChatNameEnum.AI_CHAT_CLIENT_ID,
+      name: AIChatNameEnum.SEND_CHAT_PROMPT,
+      parameters: {
+        message: prompt
+      }
+    })
+  }
+
+  /**
+   * Show an unknown error message in the AI Chat component.
+   */
+  showComingSoon(): void {
+    this.sendMessage(AIChatNameEnum.AI_CHAT_CLIENT_ID, {
+      type: AIChatNameEnum.AI_CHAT_CLIENT_ID,
+      name: AIChatNameEnum.SHOW_COMING_SOON,
+      parameters: {
+        message: 'coming_soon' // Not used
+      }
+    })
   }
 }
