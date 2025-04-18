@@ -1,8 +1,8 @@
 {
   "name": "iframe-pubsub",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A PubSub library for iframe communication.",
-  "author": "lapth",
+  "author": "Lap Tran",
   "license": "ISC",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

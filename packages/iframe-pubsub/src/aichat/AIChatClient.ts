@@ -3,6 +3,7 @@ import { Client } from "../Client";
 export enum AIChatNameEnum {
   AI_CHAT_CLIENT_ID = 'aichat',
   AI_CHAT_INTERNAL_COMM_TYPE = 'pubsub',
+  AI_CHAT_ON_RESIZE = 'onResize',
 
   // App level
   SET_PARENT_NAME = 'setParentName',
