@@ -4,11 +4,12 @@ export class PubSub {
   private static instance: PubSub;
   private subscribers: Map<string, { source?: Window; callback: MessageCallback }>;
   private mainCallback?: MessageCallback;
-
+  private boundHandleMessage;
+  
   private constructor() {
     this.subscribers = new Map();
-    this.handleMessage = this.handleMessage.bind(this);
-    window.addEventListener('message', this.handleMessage);
+    this.boundHandleMessage = this.handleMessage.bind(this);
+    window.addEventListener('message', this.boundHandleMessage);
   }
 
   static getInstance(): PubSub {
@@ -39,8 +40,8 @@ export class PubSub {
    *
    * @param pageId The ID of the page or component to unregister from.
    */
-  unregister(pageId: string): void {
-    this.subscribers.delete(pageId);
+  unregister(pageId: string): boolean {
+    return this.subscribers.delete(pageId);
   }
   
   sendMessage(message: IMessage): void {
@@ -86,7 +87,7 @@ export class PubSub {
     }
   }
 
-  private async handleMessage(event: MessageEvent) {
+  private handleMessage(event: MessageEvent) {
     const data = event.data;
     const source = event.source as Window;
 
@@ -125,7 +126,7 @@ export class PubSub {
 
     // Notify main page
     if (this.mainCallback) {
-      await this.mainCallback(message);
+      this.mainCallback(message);
     }
 
     // Forward to target
@@ -137,7 +138,7 @@ export class PubSub {
       subscriber.source.postMessage(message, '*');
     } else {
       // If subscriber is a direct client, call callback
-      await subscriber.callback(message);
+      subscriber.callback(message);
     }
   }
 

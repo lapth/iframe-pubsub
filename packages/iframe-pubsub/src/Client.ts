@@ -1,3 +1,4 @@
+import { AIChatNameEnum } from "./aichat/AIChatClient";
 import { PubSub } from "./PubSub";
 import { IMessage, MessageCallback } from "./types";
 
@@ -6,6 +7,7 @@ export class Client {
   private callback?: MessageCallback;
   private pubsub: PubSub;
   private isIframe: boolean;
+  private boundHandleMessage;
 
   /**
    * Create a new client instance.
@@ -16,7 +18,7 @@ export class Client {
     this.pageId = pageId;
     this.pubsub = PubSub.getInstance();
     this.isIframe = window !== window.parent;
-    
+    this.boundHandleMessage = this.handleMessage.bind(this);
     if (this.isIframe) {
       // We're in an iframe, register via postMessage
       window.parent.postMessage({
@@ -25,10 +27,10 @@ export class Client {
       }, '*');
       
       // Listen for messages from parent
-      window.addEventListener('message', this.handleMessage.bind(this));
+      window.addEventListener('message', this.boundHandleMessage);
     } else {
       // We're a sub component, register normally => using current pubsub instance
-      this.pubsub.register(pageId, this.handleMessage.bind(this));
+      this.pubsub.register(pageId, this.boundHandleMessage);
     }
   }
   
@@ -46,6 +48,19 @@ export class Client {
       // We're a direct client, unregister normally => using current pubsub instance
       this.pubsub.unregister(this.pageId);
     }
+  }
+
+  /**
+   * Clean up the aichat registration if the iframe is removed.
+   * 
+   * Note: aichat itself does not know the iframe is removed then we have to clean up from parent
+   */
+  cleanAIChat(): boolean {
+    if (this.isIframe) {
+      throw new Error('You are not allowed to clean up aichat from iframe.')
+    }
+    window.removeEventListener('message', this.boundHandleMessage)
+    return this.pubsub.unregister(AIChatNameEnum.AI_CHAT_CLIENT_ID);
   }
 
   /**
@@ -169,7 +184,7 @@ export class Client {
     });
   }
 
-  private async handleMessage(event: MessageEvent | IMessage) {
+  private handleMessage(event: MessageEvent | IMessage) {
     let message: IMessage;
     
     if ((event as MessageEvent).data) {
@@ -185,7 +200,7 @@ export class Client {
 
     if (this.callback) {
       try {
-        await this.callback(message);
+        this.callback(message);
       } catch (error) {
         console.error(`Client ${this.pageId} failed to process message:`, error);
       }
