@@ -3,6 +3,7 @@ import { PubSub } from "./PubSub";
 import { IMessage, MessageCallback } from "./types";
 
 export class Client {
+  protected targetAIChatClientId: string;
   private pageId: string;
   private callback?: MessageCallback;
   private pubsub: PubSub;
@@ -14,7 +15,8 @@ export class Client {
    * 
    * @param pageId The ID of the page or component to register to.
    */
-  constructor(pageId: string) {
+  constructor(pageId: string, targetAIChatClientId: string = AIChatNameEnum.AI_CHAT_CLIENT_ID) {
+    this.targetAIChatClientId = targetAIChatClientId;
     this.pageId = pageId;
     this.pubsub = PubSub.getInstance();
     this.isIframe = window !== window.parent;
@@ -60,7 +62,7 @@ export class Client {
       throw new Error('You are not allowed to clean up aichat from iframe.')
     }
     window.removeEventListener('message', this.boundHandleMessage)
-    return this.pubsub.unregister(AIChatNameEnum.AI_CHAT_CLIENT_ID);
+    return this.pubsub.unregister(this.targetAIChatClientId);
   }
 
   /**
