@@ -11,7 +11,7 @@ export enum AIChatNameEnum {
   SET_CUSTOM_HEADERS = 'setCustomHeaders',
   SET_CUSTOM_PAYLOAD = 'setCustomPayload',
   SET_METADATA = 'setMetadata',
-  ADD_SYSTEM_MESSAGE ='addSystemMessage',
+  SET_SYSTEM_MESSAGE ='setSystemMessage',
 
   // AIChat level
   SET_SUGGESTIONS = 'setSuggestions',
@@ -107,8 +107,8 @@ export class AIChatClient extends Client   {
    * 
    * @param systemMessage The system message to add.
    */
-  addSystemMessage(systemMessage: string): void {
-    this.sendAIChatPubsubMethod(AIChatNameEnum.ADD_SYSTEM_MESSAGE, systemMessage);
+  setSystemMessage(systemMessage: string): void {
+    this.sendAIChatPubsubMethod(AIChatNameEnum.SET_SYSTEM_MESSAGE, systemMessage);
   }
 
   /**
