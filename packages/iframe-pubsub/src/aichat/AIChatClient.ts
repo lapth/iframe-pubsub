@@ -103,9 +103,9 @@ export class AIChatClient extends Client   {
   }
 
   /**
-   * Add a system message to the AI Chat component.
+   * Set a system message to the AI Chat component.
    * 
-   * @param systemMessage The system message to add.
+   * @param systemMessage The system message to set.
    */
   setSystemMessage(systemMessage: string): void {
     this.sendAIChatPubsubMethod(AIChatNameEnum.SET_SYSTEM_MESSAGE, systemMessage);
