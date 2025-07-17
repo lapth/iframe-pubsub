@@ -22,6 +22,7 @@ export enum AIChatNameEnum {
   CONFIRM_ACTION = 'confirmAction',
   SHOW_OPTIONS = 'showOptions',
   SEND_CHAT_PROMPT = 'sendChatPrompt',
+  REPLAY_LAST_PROMPT_WITH_TOOL = 'replayLastPromptWithTool',
   OPEN_INTERCOM = 'openIntercom',
 
   // Default handler to process the actions
@@ -192,6 +193,18 @@ export class AIChatClient extends Client   {
       parameters: {
         message: prompt
       }
+    })
+  }
+
+  /**
+   * Force AI to extract provided information from conversation to have detailed information before moving forward.
+   *
+   * @returns An async actions with a tool_choice should be returned.
+   */
+  replayLastPromptWithTool(): void {
+    this.sendMessage(this.targetAIChatClientId, {
+      type: AIChatNameEnum.AI_CHAT_CLIENT_ID,
+      name: AIChatNameEnum.REPLAY_LAST_PROMPT_WITH_TOOL
     })
   }
 

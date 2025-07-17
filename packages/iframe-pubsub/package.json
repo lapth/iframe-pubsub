@@ -1,6 +1,6 @@
 {
   "name": "iframe-pubsub",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "A PubSub library for iframe communication.",
   "author": "Lap Tran",
   "license": "ISC",
