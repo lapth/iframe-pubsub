@@ -23,6 +23,8 @@ export enum AIChatNameEnum {
   SHOW_OPTIONS = 'showOptions',
   SEND_CHAT_PROMPT = 'sendChatPrompt',
   REPLAY_LAST_PROMPT_WITH_TOOL = 'replayLastPromptWithTool',
+  ON_AI_CHAT_EMBEDDED_TOGGLE= 'onAiChatEmbeddedToggle',
+  ON_AI_CHAT_TOGGLE = 'onAiChatToggle',
   OPEN_INTERCOM = 'openIntercom',
 
   // Default handler to process the actions
